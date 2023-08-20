@@ -1,17 +1,21 @@
 
-# Issue #201
-I marked some section in **app/build.gradle** and **gradle.properties** with 'Comment me!!!'. 
-Try commenting them out, change the test.tpl, sun the app,  and see the effect.
+# Issue 26147 reproduction
 
-You need to have Java 17+ installed, check you JAVA_HOME.
 
-Open this as a Gradle project in IntelliJ and use the 'Run anything' to run gradle with these commands (or just use terminal):
+Adding module level annotion like:
+```
+@JStacheConfig(
+        pathing = @JStachePath(prefix = "templates/", suffix = ".tpl"),
+        contentType = Html.class,
+        charset = "UTF-8")
+module issue{
+    requires transitive io.jstach.jstachio;
+}
+```
+appears to mess up Gradle annnotation processor. The exact problem has been identified here:
+https://github.com/jstachio/jstachio/issues/223#issuecomment-1685321532
 
-To run the app (Mac/Linux)
-> ./gradlew run
+If you remove the module level annotation, Gradle is fine (see a few commits prior for the code without module leve annotation).
+This seeem to be an issue with Gradle 8.3, 8.2.1 and possibly older versions!
 
-To run the app (Windows)
-> gradle run
 
-Show dependencies tree:
-> ./gradlew :app:dependencies
