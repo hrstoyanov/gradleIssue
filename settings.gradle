@@ -1,4 +1,2 @@
-
-
 rootProject.name = 'issue201'
 include('app')
